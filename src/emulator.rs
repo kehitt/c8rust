@@ -1,5 +1,5 @@
 use winit::{
-    event::{DeviceEvent, ElementState, KeyboardInput, VirtualKeyCode, WindowEvent},
+    event::{ElementState, KeyboardInput, VirtualKeyCode, WindowEvent},
     event_loop::ControlFlow,
     window::Window,
 };
@@ -57,24 +57,20 @@ impl Emulator {
             WindowEvent::ScaleFactorChanged { new_inner_size, .. } => {
                 self.renderer.on_resize(*new_inner_size)
             }
-            _ => (),
-        };
-
-        None
-    }
-
-    pub fn handle_device_event(&mut self, event: DeviceEvent) -> Option<ControlFlow> {
-        if let DeviceEvent::Key(KeyboardInput {
-            state: element_state,
-            virtual_keycode: Some(keycode),
-            ..
-        }) = event
-        {
-            match element_state {
+            WindowEvent::KeyboardInput {
+                input:
+                    KeyboardInput {
+                        state: element_state,
+                        virtual_keycode: Some(keycode),
+                        ..
+                    },
+                ..
+            } => match element_state {
                 ElementState::Pressed => self.on_key_pressed(keycode),
                 ElementState::Released => self.on_key_released(keycode),
-            }
-        }
+            },
+            _ => (),
+        };
 
         None
     }

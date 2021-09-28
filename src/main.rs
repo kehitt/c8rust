@@ -18,7 +18,6 @@ fn main() {
             Event::WindowEvent {
                 window_id, event, ..
             } if window_id == window.id() => emulator.handle_window_event(event),
-            Event::DeviceEvent { event, .. } => emulator.handle_device_event(event),
             Event::MainEventsCleared => emulator.handle_update(&window),
             Event::RedrawRequested(_) => emulator.handle_redraw(),
             _ => None,
